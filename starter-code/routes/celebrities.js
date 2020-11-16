@@ -17,8 +17,8 @@ router.get('/celebrities', (req, res) => {
 });
 
 router.get('/celebrities/new', (req, res) => {
-    res.render('celebrities/new')
-})
+  res.render('celebrities/new');
+});
 
 router.get('/celebrities/:id', (req, res) => {
   const celebrityId = req.params.id;
@@ -31,31 +31,50 @@ router.get('/celebrities/:id', (req, res) => {
     });
 });
 
-
 router.post('/celebrities', (req, res) => {
-    const {name, occupation, catchPhrase} = req.body
-    console.log(name, occupation, catchPhrase);
-    Celebrity.create({
-        name, 
-        occupation,
-        catchPhrase
-    }).then((celebrity) => {
-        console.log(`${celebrity.name} was added to the database`);
-        res.redirect('/celebrities')
-    }).catch(err => {
-        console.log(err);
-        res.render('/celebrities/new')
+  const { name, occupation, catchPhrase } = req.body;
+  console.log(name, occupation, catchPhrase);
+  Celebrity.create({
+    name,
+    occupation,
+    catchPhrase,
+  })
+    .then((celebrity) => {
+      console.log(`${celebrity.name} was added to the database`);
+      res.redirect('/celebrities');
     })
-})
+    .catch((err) => {
+      console.log(err);
+      res.render('/celebrities/new');
+    });
+});
 
-router.post('/celebrities/:id/delete', (req, res) =>{
-    Celebrity.deleteOne({_id: req.params.id})
+router.post('/celebrities/:id/delete', (req, res) => {
+  Celebrity.deleteOne({ _id: req.params.id })
     .then(() => {
-        res.redirect('/celebrities')
+      res.redirect('/celebrities');
     })
-    .catch(err => {
-        console.log(err);
-      })
-})
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+router.get('/celebrities/:id/edit', (req, res) => {
+  const celebrityId = req.params.id;
+  Celebrity.findById(celebrityId).then((celebrity) => {
+    res.render('celebrities/edit', { celebrity });
+  });
+});
+
+router.post('/celebrities/:id/edit', (req, res) => {
+  const { name, occupation, catchPhrase } = req.body;
+  Celebrity.findByIdAndUpdate(req.params.id, {
+    name: name,
+    occupation: occupation,
+    catchPhrase: catchPhrase,
+  }).then(() => {
+    res.redirect('/celebrities');
+  });
+});
 
 module.exports = router;
