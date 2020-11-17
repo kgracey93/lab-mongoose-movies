@@ -11,14 +11,14 @@
 
     <label for="Cast">Cast: </label>
 
-{{!-- {{#each celebrities}}
+    {{!-- {{#each celebrities}}
 <label><input type="radio" name="celebrity" value="{{this._id}}" /> {{this.name}}</label>
 {{/each}} --}}
-<select name="cast" id="" multiple>
-{{#each celebrities}}
-<option value="{{_id}}">{{name}}</option>
-{{/each}}
-</select>
+    <select name="cast" id="" multiple>
+        {{#each celebrities}}
+        <option value="{{_id}}">{{name}}</option>
+        {{/each}}
+    </select>
 
 
     <button type="submit">Add a Movie</button>

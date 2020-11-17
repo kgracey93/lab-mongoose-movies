@@ -25,13 +25,21 @@ router.get('/movies/new', (req, res) => {
 });
 
 router.get('/movies/:id/edit', (req, res) => {
-    const movieID = req.params.id;
-    Movie.findById(movieID)
-    .populate('cast')
+    Movie.findById(req.params.id)
     .then((movie) => {
-      res.render('movies/edit', { movie });
-    });
-  });
+      Celebrity.find()
+      .then (celebs => {
+        // console.log(celebs);
+        res.render('movies/edit', { movie, celebs })
+      })
+    })
+    .catch(err => console.log(err))
+  })
+//   router.get('/movies/:id/edit', async (req, res) => {
+//     const movie = await Movie.findById(req.params.id);
+//     const celebs = await Celebrity.find();
+//     res.render('movies/edit', { movie, celebs })
+    
 
 router.post('/movies', (req, res) => {
   const { title, genre, plot, cast } = req.body;
